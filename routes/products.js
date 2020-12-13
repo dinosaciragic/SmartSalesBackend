@@ -9,13 +9,13 @@ const storage = multer.diskStorage({
         cb(null, new Date().toISOString() + file.originalname)
     }
 });
-const upload = multer({ storage: storage }).array('files', 12);
+const upload = multer({ storage: storage });
 
 // Product model
 const Product = require('../models/Product');
 
 // api/products/add
-router.post('/add', upload('productImage'), (req, res) => {
+router.post('/add', upload.single('productImage'), (req, res) => {
 
     const productImage = req.file.path;
 
