@@ -26,10 +26,12 @@ app.use((req, res, next) => {
 
 // Middleware
 app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads'))
 
 // Routes
 app.use('/api/', require('./routes/index'));
 app.use('/api/users', require('./routes/users'));
+app.use('/api/products', require('./routes/products'));
 
 const PORT = process.env.PORT || 5000;
 

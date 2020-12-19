@@ -12,7 +12,10 @@ const UserSchema = new mongoose.Schema({
     isCompany: {
         type: Boolean,
         required: true
-    }
+    },
+    companyType: {
+        type: String
+    },
 });
 
 const User = mongoose.model('User', UserSchema);
