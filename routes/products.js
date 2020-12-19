@@ -15,9 +15,15 @@ const upload = multer({ storage: storage });
 const Product = require('../models/Product');
 
 // api/products/add
-router.post('/add', upload.single('productImage'), (req, res) => {
+router.post('/add', upload.array('productImage'), (req, res) => {
 
-    const productImage = req.file.path;
+    const productImage = []
+
+    if (req.files) {
+        req.files.forEach((item) => {
+            productImage.push(item.path)
+        })
+    }
 
     const {
         title,
@@ -30,6 +36,10 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         price,
         website,
         location,
+        email,
+        contactNumber,
+        instagram,
+        facebook,
         isKreativac
     } = req.body;
 
@@ -45,6 +55,10 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         price,
         website,
         location,
+        email,
+        contactNumber,
+        instagram,
+        facebook,
         isKreativac
     });
 
@@ -54,6 +68,16 @@ router.post('/add', upload.single('productImage'), (req, res) => {
     }).catch(err => console.error(err));
 
 });
+
+// api/products/edit/id
+router.put('/edit/:id', async (req, res, next) => {
+
+    Product.findByIdAndUpdate({ _id: req.params.id }, req.body).then((updatedProduct) => {
+        res.send({ updatedProduct: true });
+    });
+
+});
+
 
 // api/products?page=1
 router.get('/', paginatedResults(Product, false), (req, res) => {
@@ -65,6 +89,31 @@ router.get('/kreativci', paginatedResults(Product, true), (req, res) => {
     res.send(res.paginatedResults);
 });
 
+// api/products/all?page=1
+router.get('/all', paginatedAll(Product), (req, res) => {
+    res.send(res.paginatedResults);
+});
+
+// Pagination middleware
+function paginatedAll(model) {
+    return async (req, res, next) => {
+        const page = req.query.page;
+        const search = req.query.searchTerm;
+        const limit = 12;
+        var regex = new RegExp(search, 'i');  // RegEdp works as contains for find function and 'i' makes it case insensitive
+        const startIndex = (page - 1) * limit;
+
+        try {
+            const results = await model.find().limit(limit).skip(startIndex).exec();
+            res.paginatedResults = results;
+            next();
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+
+
+    }
+}
 
 // Pagination middleware
 function paginatedResults(model, isKreativac) {

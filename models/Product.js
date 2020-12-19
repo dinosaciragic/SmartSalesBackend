@@ -30,11 +30,16 @@ const ProductSchema = new mongoose.Schema({
         required: true
     },
     location: {
-        type: String,
-        required: true
+        type: String
+    },
+    email: {
+        type: String
+    },
+    contactNumber: {
+        type: String
     },
     productImage: {
-        type: String
+        type: Array
     },
     price: {
         type: Number
@@ -46,6 +51,15 @@ const ProductSchema = new mongoose.Schema({
     isKreativac: {
         type: Boolean,
         required: true
+    },
+    instagram: {
+        type: String
+    },
+    facebook: {
+        type: String
+    },
+    likedIds: {
+        type: Array
     }
 });
 
