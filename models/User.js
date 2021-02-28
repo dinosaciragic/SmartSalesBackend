@@ -9,13 +9,39 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    isCompany: {
-        type: Boolean,
-        required: true
-    },
     companyType: {
         type: String
     },
+    companyName: {
+        type: String
+    },
+    companyName: {
+        type: String
+    },
+    description: {
+        type: String,
+    },
+    contactNumber: {
+        type: String
+    },
+    companyImage: {
+        type: String
+    },
+    website: {
+        type: String
+    },
+    instagram: {
+        type: String
+    },
+    facebook: {
+        type: String
+    },
+    followerIds: {
+        type: Array
+    },
+    location: {
+        type: String
+    }
 });
 
 const User = mongoose.model('User', UserSchema);

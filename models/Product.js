@@ -10,12 +10,10 @@ const ProductSchema = new mongoose.Schema({
         required: true
     },
     startDate: {
-        type: String,
-        required: true
+        type: String
     },
     endDate: {
-        type: String,
-        required: true
+        type: String
     },
     authorId: {
         type: String,
@@ -29,34 +27,17 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    location: {
-        type: String
-    },
-    email: {
-        type: String
-    },
-    contactNumber: {
+    subCategory: {
         type: String
     },
     productImage: {
         type: Array
     },
-    price: {
+    oldPrice: {
         type: Number
     },
-    website: {
-        type: String
-    },
-    // Kreativac = true, Not Kreativac = false
-    isKreativac: {
-        type: Boolean,
-        required: true
-    },
-    instagram: {
-        type: String
-    },
-    facebook: {
-        type: String
+    newPrice: {
+        type: Number
     },
     likedIds: {
         type: Array
