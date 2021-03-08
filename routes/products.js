@@ -106,20 +106,40 @@ function paginatedResults(model) {
         try {
             if (productCategory) {
                 if (subCategory) {
-                    console.log('here')
                     const results = await model.find({ title: regex, productCategory: productCategory, subCategory: subCategory }).limit(limit).skip(startIndex).exec();
+
                     res.paginatedResults = results;
                     next();
                 } else {
-                    console.log('else')
                     const results = await model.find({ title: regex, productCategory: productCategory }).limit(limit).skip(startIndex).exec();
+
                     res.paginatedResults = results;
                     next();
                 }
 
             } else {
                 const results = await model.find({ title: regex }).limit(limit).skip(startIndex).exec();
-                res.paginatedResults = results;
+                const authorResults = await model.find({ authorName: regex }).limit(limit).skip(startIndex).exec();
+                const allResults = results.concat(authorResults);
+                const finalResults = [];
+                for (let i = 0; i < allResults.length; i++) {
+                    if (finalResults.length == 0) {
+                        finalResults.push(allResults[i]);
+                    } else {
+                        var found = false;
+                        for (let j = 0; j < finalResults.length; j++) {
+                            if (JSON.stringify(allResults[i]) === JSON.stringify(finalResults[j])) {
+                                found = true;
+                            }
+                        }
+
+                        if (!found) {
+                            finalResults.push(allResults[i]);
+                        }
+                    }
+                }
+
+                res.paginatedResults = finalResults;
                 next();
             }
 
