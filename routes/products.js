@@ -15,15 +15,15 @@ const upload = multer({ storage: storage });
 const Product = require('../models/Product');
 
 // api/products/add
-router.post('/add', upload.array('productImage'), (req, res) => {
+router.post('/add', upload.single('productImage'), (req, res) => {
 
-    const productImage = []
+    const productImage = req.file.path;
 
-    if (req.files) {
-        req.files.forEach((item) => {
-            productImage.push(item.path)
-        })
-    }
+    /*  if (req.files) {
+         req.files.forEach((item) => {
+             productImage.push(item.path)
+         })
+     } */
 
     const {
         title,
@@ -35,7 +35,8 @@ router.post('/add', upload.array('productImage'), (req, res) => {
         productCategory,
         subCategory,
         oldPrice,
-        newPrice
+        newPrice,
+        stock
     } = req.body;
 
     const newProduct = new Product({
@@ -49,7 +50,8 @@ router.post('/add', upload.array('productImage'), (req, res) => {
         subCategory,
         oldPrice,
         newPrice,
-        productImage
+        productImage,
+        stock
     });
 
     // Save product

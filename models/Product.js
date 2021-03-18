@@ -41,6 +41,9 @@ const ProductSchema = new mongoose.Schema({
     },
     likedIds: {
         type: Array
+    },
+    stock: {
+        type: Number
     }
 });
 

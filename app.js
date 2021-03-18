@@ -1,15 +1,17 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
-var bodyParser = require('body-parser');
+const cors = require('cors');
 
 const uri = "mongodb+srv://dinosaciragic:jebogadan@smartsales.jmmcs.mongodb.net/test?retryWrites=true&w=majority"; //might have to change test
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MangoDB Connected..'))
     .catch(err => console.log(err))
 
+app.use(cors())
+
 // Bodyparser
-app.use(bodyParser.urlencoded({
+app.use(express.urlencoded({
     extended: true
 }));
 
@@ -25,7 +27,7 @@ app.use((req, res, next) => {
 });
 
 // Middleware
-app.use(bodyParser.json());
+app.use(express.json());
 app.use('/uploads', express.static('uploads'))
 
 // Routes
