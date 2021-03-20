@@ -38,7 +38,7 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         newPrice,
         stock
     } = req.body;
-
+    console.log('new subCategory', req.body)
     const newProduct = new Product({
         title,
         description,
@@ -76,6 +76,12 @@ router.get('/', paginatedResults(Product), (req, res) => {
     res.send(res.paginatedResults);
 });
 
+// api/products/authorID
+router.get('/:id', async (req, res) => {
+    const results = await Product.find({ authorId: req.params.id }).exec();
+    res.send(results);
+});
+
 // api/products/all?page=1
 router.get('/all', paginatedAll(Product), (req, res) => {
     res.send(res.paginatedResults);
@@ -108,7 +114,7 @@ function paginatedResults(model) {
         try {
             if (productCategory) {
                 if (subCategory) {
-                    const results = await model.find({ title: regex, productCategory: productCategory, subCategory: subCategory }).limit(limit).skip(startIndex).exec();
+                    const results = await model.find({ title: regex, productCategory: productCategory, subCategory: { $in: subCategory } }).limit(limit).skip(startIndex).exec();
 
                     res.paginatedResults = results;
                     next();
