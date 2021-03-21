@@ -38,7 +38,7 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         newPrice,
         stock
     } = req.body;
-    console.log('new subCategory', req.body)
+  
     const newProduct = new Product({
         title,
         description,
@@ -76,29 +76,17 @@ router.get('/', paginatedResults(Product), (req, res) => {
     res.send(res.paginatedResults);
 });
 
+// api/products/all
+router.get('/all', async (req, res) => {
+    const results = await Product.find({});
+    res.send(results);
+});
+
 // api/products/authorID
 router.get('/:id', async (req, res) => {
     const results = await Product.find({ authorId: req.params.id }).exec();
     res.send(results);
 });
-
-// api/products/all?page=1
-router.get('/all', paginatedAll(Product), (req, res) => {
-    res.send(res.paginatedResults);
-});
-
-// Pagination middleware
-function paginatedAll(model) {
-    return async (req, res, next) => {
-        try {
-            const results = await model.find();
-            res.paginatedResults = results;
-            next();
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
-    }
-}
 
 // Pagination middleware
 function paginatedResults(model) {

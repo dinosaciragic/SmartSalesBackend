@@ -136,9 +136,7 @@ router.post('/login', async (req, res) => {
         }
 
         // Create and assign a token
-        console.log('user', user)
         const token = jwt.sign({ _id: user._id, isCompany: user.isCompany }, constants.TOKEN_SECRET);
-        console.log('token', token)
         res.header('Authorization', token).send({ token: token });
     } catch (error) {
         console.error(error);
