@@ -15,15 +15,15 @@ const upload = multer({ storage: storage });
 const Product = require('../models/Product');
 
 // api/products/add
-router.post('/add', upload.array('productImage'), (req, res) => {
+router.post('/add', upload.single('productImage'), (req, res) => {
 
-    const productImage = []
+    const productImage = req.file.path;
 
-    if (req.files) {
-        req.files.forEach((item) => {
-            productImage.push(item.path)
-        })
-    }
+    /*  if (req.files) {
+         req.files.forEach((item) => {
+             productImage.push(item.path)
+         })
+     } */
 
     const {
         title,
@@ -33,14 +33,10 @@ router.post('/add', upload.array('productImage'), (req, res) => {
         authorId,
         authorName,
         productCategory,
-        price,
-        website,
-        location,
-        email,
-        contactNumber,
-        instagram,
-        facebook,
-        isKreativac
+        subCategory,
+        oldPrice,
+        newPrice,
+        stock
     } = req.body;
 
     const newProduct = new Product({
@@ -51,15 +47,11 @@ router.post('/add', upload.array('productImage'), (req, res) => {
         authorId,
         authorName,
         productCategory,
+        subCategory,
+        oldPrice,
+        newPrice,
         productImage,
-        price,
-        website,
-        location,
-        email,
-        contactNumber,
-        instagram,
-        facebook,
-        isKreativac
+        stock
     });
 
     // Save product
@@ -80,54 +72,81 @@ router.put('/edit/:id', async (req, res, next) => {
 
 
 // api/products?page=1
-router.get('/', paginatedResults(Product, false), (req, res) => {
+router.get('/', paginatedResults(Product), (req, res) => {
     res.send(res.paginatedResults);
 });
 
-// api/products/kreativci?page=1
-router.get('/kreativci', paginatedResults(Product, true), (req, res) => {
-    res.send(res.paginatedResults);
+// api/products/all
+router.get('/all', async (req, res) => {
+    const results = await Product.find({});
+    res.send(results);
 });
 
-// api/products/all?page=1
-router.get('/all', paginatedAll(Product), (req, res) => {
-    res.send(res.paginatedResults);
+// api/products/authorID
+router.get('/:id', async (req, res) => {
+    const results = await Product.find({ authorId: req.params.id }).exec();
+    res.send(results);
+});
+
+// api/products/productId/:id
+router.get('/productId/:id', async (req, res) => {
+    const results = await Product.find({ _id: req.params.id }).exec();
+
+    res.send(results);
 });
 
 // Pagination middleware
-function paginatedAll(model) {
+function paginatedResults(model) {
     return async (req, res, next) => {
         const page = req.query.page;
         const search = req.query.searchTerm;
+        const productCategory = req.query.productCategory;
+        const subCategory = req.query.subCategory;
         const limit = 12;
         var regex = new RegExp(search, 'i');  // RegEdp works as contains for find function and 'i' makes it case insensitive
         const startIndex = (page - 1) * limit;
 
         try {
-            const results = await model.find().limit(limit).skip(startIndex).exec();
-            res.paginatedResults = results;
-            next();
-        } catch (error) {
-            res.status(500).json({ message: error.message });
-        }
+            if (productCategory) {
+                if (subCategory) {
+                    const results = await model.find({ title: regex, productCategory: productCategory, subCategory: { $in: subCategory } }).limit(limit).skip(startIndex).exec();
+
+                    res.paginatedResults = results;
+                    next();
+                } else {
+                    const results = await model.find({ title: regex, productCategory: productCategory }).limit(limit).skip(startIndex).exec();
+
+                    res.paginatedResults = results;
+                    next();
+                }
+
+            } else {
+                const results = await model.find({ title: regex }).limit(limit).skip(startIndex).exec();
+                const authorResults = await model.find({ authorName: regex }).limit(limit).skip(startIndex).exec();
+                const allResults = results.concat(authorResults);
+                const finalResults = [];
+                for (let i = 0; i < allResults.length; i++) {
+                    if (finalResults.length == 0) {
+                        finalResults.push(allResults[i]);
+                    } else {
+                        var found = false;
+                        for (let j = 0; j < finalResults.length; j++) {
+                            if (JSON.stringify(allResults[i]) === JSON.stringify(finalResults[j])) {
+                                found = true;
+                            }
+                        }
+
+                        if (!found) {
+                            finalResults.push(allResults[i]);
+                        }
+                    }
+                }
+
+                res.paginatedResults = finalResults;
+                next();
+            }
 
 
-    }
-}
-
-// Pagination middleware
-function paginatedResults(model, isKreativac) {
-    return async (req, res, next) => {
-        const page = req.query.page;
-        const search = req.query.searchTerm;
-        const limit = 12;
-        var regex = new RegExp(search, 'i');  // RegEdp works as contains for find function and 'i' makes it case insensitive
-        const startIndex = (page - 1) * limit;
-
-        try {
-            const results = await model.find({ isKreativac: isKreativac }).limit(limit).skip(startIndex).exec();
-            res.paginatedResults = results;
-            next();
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
