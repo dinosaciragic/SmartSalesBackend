@@ -38,7 +38,7 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         newPrice,
         stock
     } = req.body;
-  
+
     const newProduct = new Product({
         title,
         description,
@@ -85,6 +85,13 @@ router.get('/all', async (req, res) => {
 // api/products/authorID
 router.get('/:id', async (req, res) => {
     const results = await Product.find({ authorId: req.params.id }).exec();
+    res.send(results);
+});
+
+// api/products/productId/:id
+router.get('/productId/:id', async (req, res) => {
+    const results = await Product.find({ _id: req.params.id }).exec();
+
     res.send(results);
 });
 
