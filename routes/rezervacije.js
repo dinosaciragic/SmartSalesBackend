@@ -9,7 +9,7 @@ const Rezervacija = require('../models/Rezervacija');
 
 // api/rezervacije/add
 router.post('/add', (req, res) => {
-    console.log('zasto rez', req.body)
+   
     const {
         email,
         contactNumber,
