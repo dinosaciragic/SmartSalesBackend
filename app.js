@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 
 const uri = "mongodb+srv://dinosaciragic:jebogadan@smartsales.jmmcs.mongodb.net/test?retryWrites=true&w=majority"; //might have to change test
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false })
     .then(() => console.log('MangoDB Connected..'))
     .catch(err => console.log(err))
 

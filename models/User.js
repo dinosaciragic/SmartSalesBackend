@@ -41,6 +41,9 @@ const UserSchema = new mongoose.Schema({
     },
     location: {
         type: String
+    },
+    postsLeft: {
+        type: Number
     }
 });
 

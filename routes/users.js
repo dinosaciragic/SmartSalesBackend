@@ -61,7 +61,8 @@ router.post('/register', upload.single('companyImage'), (req, res) => {
         instagram,
         facebook,
         followerIds,
-        location
+        location,
+        postsLeft
     } = req.body;
 
     let errors = [];
@@ -93,7 +94,8 @@ router.post('/register', upload.single('companyImage'), (req, res) => {
                     instagram,
                     facebook,
                     followerIds,
-                    location
+                    location,
+                    postsLeft
                 });
 
                 // Hash Password
@@ -161,7 +163,8 @@ router.put('/edit/:id', upload.single('companyImage'), async (req, res, next) =>
         instagram,
         facebook,
         followerIds,
-        location
+        location,
+        postsLeft
     } = req.body;
 
     const editedUser = new User({
@@ -177,7 +180,8 @@ router.put('/edit/:id', upload.single('companyImage'), async (req, res, next) =>
         instagram,
         facebook,
         followerIds,
-        location
+        location,
+        postsLeft
     });
 
     User.findByIdAndUpdate({ _id: req.params.id }, editedUser).then((updatedCompany) => {
