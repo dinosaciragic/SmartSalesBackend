@@ -47,7 +47,10 @@ router.get('/single/:id', (req, res) => {
 router.post('/register', upload.single('companyImage'), (req, res) => {
 
     var companyImage;
-    companyImage = req.file.path;
+
+    if (req.file) {
+        companyImage = req.file.path;
+    }
 
     const {
         email,

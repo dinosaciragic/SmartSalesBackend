@@ -9,7 +9,7 @@ const PotentialPartner = require('../models/PotentialPartner');
 
 // api/PotentialPartners/add
 router.post('/add', (req, res) => {
-    console.log('zasto', req.body)
+   
     const {
         email,
         contactNumber
