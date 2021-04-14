@@ -47,7 +47,10 @@ router.get('/single/:id', (req, res) => {
 router.post('/register', upload.single('companyImage'), (req, res) => {
 
     var companyImage;
-    companyImage = req.file.path;
+
+    if (req.file) {
+        companyImage = req.file.path;
+    }
 
     const {
         email,
@@ -149,7 +152,10 @@ router.post('/login', async (req, res) => {
 router.put('/edit/:id', upload.single('companyImage'), async (req, res, next) => {
 
     var companyImage;
-    /*  companyImage = req.file.path; add later  */
+
+    if (req.file) {
+        companyImage = req.file.path;
+    }
 
     const {
         _id,

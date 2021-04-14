@@ -9,7 +9,7 @@ const Feedback = require('../models/Feedback');
 
 // api/feedback/add
 router.post('/add', (req, res) => {
-    
+
     const {
         text
     } = req.body;
