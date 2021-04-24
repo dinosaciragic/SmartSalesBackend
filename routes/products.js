@@ -71,7 +71,7 @@ router.put('/edit/:id', async (req, res, next) => {
 });
 
 // Delete product API
-router.delete('/delete/:id', verify, (req, res, next) => {
+router.delete('/delete/:id', (req, res, next) => {
     Product.findByIdAndDelete({ _id: req.params.id }).then((updatedOrder) => {
         res.send({ deletedOrder: true });
     });
