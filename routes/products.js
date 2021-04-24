@@ -70,6 +70,12 @@ router.put('/edit/:id', async (req, res, next) => {
 
 });
 
+// Delete product API
+router.delete('/delete/:id', verify, (req, res, next) => {
+    Product.findByIdAndDelete({ _id: req.params.id }).then((updatedOrder) => {
+        res.send({ deletedOrder: true });
+    });
+});
 
 // api/products?page=1
 router.get('/', paginatedResults(Product), (req, res) => {
