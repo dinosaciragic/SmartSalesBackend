@@ -9,14 +9,16 @@ const PotentialPartner = require('../models/PotentialPartner');
 
 // api/PotentialPartners/add
 router.post('/add', (req, res) => {
-   
+
     const {
         email,
+        companyName,
         contactNumber
     } = req.body;
 
     const newPotentialPartner = new PotentialPartner({
         email,
+        companyName,
         contactNumber
     });
 
