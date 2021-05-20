@@ -117,20 +117,20 @@ function paginatedResults(model) {
         try {
             if (productCategory) {
                 if (subCategory) {
-                    const results = await model.find({ title: regex, productCategory: productCategory, subCategory: { $in: subCategory } }).sort({ uploadDate: 'descending' }).limit(limit).skip(startIndex).exec();
+                    const results = await model.find({ title: regex, productCategory: productCategory, subCategory: { $in: subCategory } }).sort({ uploadDate: 'ascending' }).limit(limit).skip(startIndex).exec();
 
                     res.paginatedResults = results;
                     next();
                 } else {
-                    const results = await model.find({ title: regex, productCategory: productCategory }).limit(limit).skip(startIndex).sort({ uploadDate: 'descending' }).exec();
+                    const results = await model.find({ title: regex, productCategory: productCategory }).limit(limit).skip(startIndex).sort({ uploadDate: 'ascending' }).exec();
 
                     res.paginatedResults = results;
                     next();
                 }
 
             } else {
-                const results = await model.find({ title: regex }).sort({ uploadDate: 'descending' }).limit(limit).skip(startIndex).exec();
-                const authorResults = await model.find({ authorName: regex }).sort({ uploadDate: 'descending' }).limit(limit).skip(startIndex).exec();
+                const results = await model.find({ title: regex }).sort({ uploadDate: 'ascending' }).limit(limit).skip(startIndex).exec();
+                const authorResults = await model.find({ authorName: regex }).sort({ uploadDate: 'ascending' }).limit(limit).skip(startIndex).exec();
                 const allResults = results.concat(authorResults);
                 const finalResults = [];
                 for (let i = 0; i < allResults.length; i++) {
