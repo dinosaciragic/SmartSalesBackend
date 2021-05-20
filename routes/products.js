@@ -36,7 +36,8 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         subCategory,
         oldPrice,
         newPrice,
-        stock
+        stock,
+        uploadDate
     } = req.body;
 
     const newProduct = new Product({
@@ -51,7 +52,8 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         oldPrice,
         newPrice,
         productImage,
-        stock
+        stock,
+        uploadDate
     });
 
     // Save product
@@ -115,20 +117,20 @@ function paginatedResults(model) {
         try {
             if (productCategory) {
                 if (subCategory) {
-                    const results = await model.find({ title: regex, productCategory: productCategory, subCategory: { $in: subCategory } }).limit(limit).skip(startIndex).exec();
+                    const results = await model.find({ title: regex, productCategory: productCategory, subCategory: { $in: subCategory } }).sort({ uploadDate: 'descending' }).limit(limit).skip(startIndex).exec();
 
                     res.paginatedResults = results;
                     next();
                 } else {
-                    const results = await model.find({ title: regex, productCategory: productCategory }).limit(limit).skip(startIndex).exec();
+                    const results = await model.find({ title: regex, productCategory: productCategory }).limit(limit).skip(startIndex).sort({ uploadDate: 'descending' }).exec();
 
                     res.paginatedResults = results;
                     next();
                 }
 
             } else {
-                const results = await model.find({ title: regex }).limit(limit).skip(startIndex).exec();
-                const authorResults = await model.find({ authorName: regex }).limit(limit).skip(startIndex).exec();
+                const results = await model.find({ title: regex }).sort({ uploadDate: 'descending' }).limit(limit).skip(startIndex).exec();
+                const authorResults = await model.find({ authorName: regex }).sort({ uploadDate: 'descending' }).limit(limit).skip(startIndex).exec();
                 const allResults = results.concat(authorResults);
                 const finalResults = [];
                 for (let i = 0; i < allResults.length; i++) {
