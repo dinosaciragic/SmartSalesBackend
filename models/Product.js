@@ -44,6 +44,9 @@ const ProductSchema = new mongoose.Schema({
     },
     stock: {
         type: Number
+    },
+    uploadDate: {
+        type: String
     }
 });
 
