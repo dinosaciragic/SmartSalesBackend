@@ -37,7 +37,8 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         oldPrice,
         newPrice,
         stock,
-        uploadDate
+        uploadDate,
+        discountAmmount
     } = req.body;
 
     const newProduct = new Product({
@@ -53,7 +54,8 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         newPrice,
         productImage,
         stock,
-        uploadDate
+        uploadDate,
+        discountAmmount
     });
 
     // Save product
