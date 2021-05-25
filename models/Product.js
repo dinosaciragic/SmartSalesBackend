@@ -39,6 +39,9 @@ const ProductSchema = new mongoose.Schema({
     newPrice: {
         type: Number
     },
+    discountAmmount: {
+        type: Number
+    },
     likedIds: {
         type: Array
     },
