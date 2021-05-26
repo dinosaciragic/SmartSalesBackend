@@ -1,8 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const constants = require('../shared/constants');
 // PotentialPartner model
 const PotentialPartner = require('../models/PotentialPartner');
 

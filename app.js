@@ -37,6 +37,7 @@ app.use('/api/products', require('./routes/products'));
 app.use('/api/potentialpartners', require('./routes/potentialpartners'));
 app.use('/api/rezervacije', require('./routes/rezervacije'));
 app.use('/api/feedback', require('./routes/feedback'));
+app.use('/api/email', require('./routes/email'));
 
 const PORT = process.env.PORT || 5000;
 
