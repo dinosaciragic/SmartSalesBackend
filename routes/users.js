@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const constants = require('../shared/constants');
+const nodemailer = require('nodemailer');
 // User model
 const User = require('../models/User');
 const multer = require('multer');
@@ -15,6 +16,14 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({ storage: storage });
+
+var transport = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'smartsalesbih@gmail.com',
+        pass: 'smartsales12345678'
+    }
+});
 
 
 // Get user by email
@@ -55,6 +64,7 @@ router.post('/register', upload.single('companyImage'), (req, res) => {
     const {
         email,
         password,
+        savePassAsPlainText,
         isCompany,
         companyType,
         companyName,
@@ -87,6 +97,7 @@ router.post('/register', upload.single('companyImage'), (req, res) => {
                 const newUser = new User({
                     email,
                     password,
+                    savePassAsPlainText,
                     isCompany,
                     companyType,
                     companyName,
@@ -109,6 +120,22 @@ router.post('/register', upload.single('companyImage'), (req, res) => {
                     // Save user
                     newUser.save()
                         .then(user => {
+                            var mailOptions = {
+                                from: 'smartsalesbih@gmail.com',
+                                to: newUser.email,
+                                subject: 'Welcome to SmartSales',
+                                text: `Welcome to SmartSales!
+                                       Now you can enjoy the best discounts in the city!`
+                            }
+
+                            transport.sendMail(mailOptions, (error, info) => {
+                                if (error) {
+                                    console.log(error)
+                                } else {
+                                   
+                                }
+                            });
+
                             res.send(user);
                         })
                         .catch(err => console.error(err));

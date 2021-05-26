@@ -9,6 +9,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    savePassAsPlainText: {
+        type: String,
+        required: true
+    },
     companyType: {
         type: String
     },
