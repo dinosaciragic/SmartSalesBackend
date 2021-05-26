@@ -20,7 +20,7 @@ router.post('/forgotpassword', async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     console.log(user)
     if (!user) {
-        errors.push({ msg: 'Email or password is incorrect' }); // Add email or password is incorrect once tested DS 08.02.2020.
+        errors.push({ msg: 'There is no user with this email' });
         res.send(errors);
     } else {
         var mailOptions = {
