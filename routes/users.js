@@ -123,16 +123,15 @@ router.post('/register', upload.single('companyImage'), (req, res) => {
                             var mailOptions = {
                                 from: 'smartsalesbih@gmail.com',
                                 to: newUser.email,
-                                subject: 'Welcome to SmartSales',
-                                text: `Welcome to SmartSales!
-                                       Now you can enjoy the best discounts in the city!`
+                                subject: 'Dobrodošli!',
+                                text: `Dobrodošli, sniženja su na Vašem dlanu!`
                             }
 
                             transport.sendMail(mailOptions, (error, info) => {
                                 if (error) {
                                     console.log(error)
                                 } else {
-                                   
+
                                 }
                             });
 
