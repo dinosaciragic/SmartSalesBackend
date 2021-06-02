@@ -26,8 +26,9 @@ router.post('/forgotpassword', async (req, res) => {
         var mailOptions = {
             from: 'smartsalesbih@gmail.com',
             to: req.body.email,
-            subject: 'Forgot password',
-            text: `Your password is ` + user.savePassAsPlainText
+            subject: 'Zaboravljena lozinka',
+            text: `Vaša lozinka je: ` + user.savePassAsPlainText + ` 
+            Ukoliko niste Vi zatražili isporuku zaboravljene lozinke, molimo zanemarite ovaj e-mail.`
         }
 
         transport.sendMail(mailOptions, (error, info) => {
