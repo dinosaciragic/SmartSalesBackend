@@ -92,6 +92,15 @@ router.get('/all', async (req, res) => {
     res.send(results);
 });
 
+// api/products/unique
+router.get('/unique', async (req, res) => {
+    const results = await Product.find({});
+    const unique = [...new Set(results.map(item => item.productCategory))];
+    console.log('unique', unique)
+
+    res.send(unique);
+});
+
 // api/products/authorID
 router.get('/:id', async (req, res) => {
     const results = await Product.find({ authorId: req.params.id }).exec();
