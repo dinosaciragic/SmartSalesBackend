@@ -15,6 +15,9 @@ const ProductSchema = new mongoose.Schema({
     endDate: {
         type: String
     },
+    endDateAsNum: {
+        type: Number
+    },
     authorId: {
         type: String,
         required: true

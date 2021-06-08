@@ -30,6 +30,7 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         description,
         startDate,
         endDate,
+        endDateAsNum,
         authorId,
         authorName,
         productCategory,
@@ -46,6 +47,7 @@ router.post('/add', upload.single('productImage'), (req, res) => {
         description,
         startDate,
         endDate,
+        endDateAsNum,
         authorId,
         authorName,
         productCategory,
@@ -88,13 +90,13 @@ router.get('/', paginatedResults(Product), (req, res) => {
 
 // api/products/all
 router.get('/all', async (req, res) => {
-    const results = await Product.find({});
+    const results = await Product.find({ endDateAsNum: { $gte: new Date().getTime() } });
     res.send(results);
 });
 
 // api/products/unique
 router.get('/unique', async (req, res) => {
-    const results = await Product.find({});
+    const results = await Product.find({ endDateAsNum: { $gte: new Date().getTime() } });
     const unique = [...new Set(results.map(item => item.productCategory))];
     console.log('unique', unique)
 
@@ -103,7 +105,7 @@ router.get('/unique', async (req, res) => {
 
 // api/products/authorID
 router.get('/:id', async (req, res) => {
-    const results = await Product.find({ authorId: req.params.id }).exec();
+    const results = await Product.find({ authorId: req.params.id, endDateAsNum: { $gte: new Date().getTime() } }).exec();
     res.send(results);
 });
 
@@ -122,28 +124,68 @@ function paginatedResults(model) {
         const productCategory = req.query.productCategory;
         const subCategory = req.query.subCategory;
         const limit = 12;
+
         var regex = new RegExp(search, 'i');  // RegEdp works as contains for find function and 'i' makes it case insensitive
         const startIndex = (page - 1) * limit;
 
         try {
             if (productCategory) {
                 if (subCategory) {
-                    const results = await model.find({ title: regex, productCategory: productCategory, subCategory: { $in: subCategory } }).sort({ uploadDate: 'descending' }).limit(limit).skip(startIndex).exec();
+                    const results = await model
+                        .find({
+                            endDateAsNum: { $gte: new Date().getTime() },
+                            title: regex,
+                            productCategory: productCategory,
+                            subCategory: { $in: subCategory }
+                        })
+                        .sort({ uploadDate: 'descending' })
+                        .limit(limit)
+                        .skip(startIndex)
+                        .exec();
 
                     res.paginatedResults = results;
                     next();
                 } else {
-                    const results = await model.find({ title: regex, productCategory: productCategory }).limit(limit).skip(startIndex).sort({ uploadDate: 'descending' }).exec();
+                    const results = await model
+                        .find({
+                            endDateAsNum: { $gte: new Date().getTime() },
+                            title: regex,
+                            productCategory: productCategory
+                        })
+                        .limit(limit)
+                        .skip(startIndex)
+                        .sort({ uploadDate: 'descending' })
+                        .exec();
 
                     res.paginatedResults = results;
                     next();
                 }
 
             } else {
-                const results = await model.find({ title: regex }).sort({ uploadDate: 'descending' }).limit(limit).skip(startIndex).exec();
-                const authorResults = await model.find({ authorName: regex }).sort({ uploadDate: 'descending' }).limit(limit).skip(startIndex).exec();
+                const results = await model
+                    .find({
+                        endDateAsNum: { $gte: new Date().getTime() },
+                        title: regex
+                    })
+                    .sort({ uploadDate: 'descending' })
+                    .limit(limit)
+                    .skip(startIndex)
+                    .exec();
+
+                const authorResults = await model
+                    .find({
+                        endDateAsNum: { $gte: new Date().getTime() },
+                        authorName: regex
+                    })
+                    .sort({ uploadDate: 'descending' })
+                    .limit(limit)
+                    .skip(startIndex)
+                    .exec();
+
                 const allResults = results.concat(authorResults);
+
                 const finalResults = [];
+
                 for (let i = 0; i < allResults.length; i++) {
                     if (finalResults.length == 0) {
                         finalResults.push(allResults[i]);
