@@ -21,7 +21,7 @@ var transport = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'smartsalesbih@gmail.com',
-        pass: 'smartsales12345678'
+        pass: 'Smartsales5432112345'
     }
 });
 
@@ -131,7 +131,7 @@ router.post('/register', upload.single('companyImage'), (req, res) => {
                                 if (error) {
                                     console.log(error)
                                 } else {
-
+                                    console.log('info', info)
                                 }
                             });
 
