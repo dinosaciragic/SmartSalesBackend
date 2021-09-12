@@ -132,17 +132,17 @@ router.post('/register', upload.single('companyImage'), (req, res) => {
                   subject: 'Dobrodošli!',
                   text: `Dobrodošli, sniženja su na vašem dlanu! 
 
-                    Od sada SmartSales će se pobrinuti da upoznate i kroz njihove posebne ponude, zavolite SmartSales brendove. 
+                Od sada SmartSales će se pobrinuti da upoznate i kroz njihove posebne ponude, zavolite SmartSales brendove. 
 
-                    Ukoliko želite iskoristiti određenu ponudu, kontaktirajte ili posjetite prodavača i zatražite Vašu SmartSales cijenu. Sve informacije su Vam na raspolaganju putem profila prodavača, kojem možete pristupiti klikom na profilnu sliku.
+                Ukoliko želite iskoristiti određenu ponudu, kontaktirajte ili posjetite prodavača i zatražite Vašu SmartSales cijenu. Sve informacije su Vam na raspolaganju putem profila prodavača, kojem možete pristupiti klikom na profilnu sliku.
 
-                    Imate prijedlog, problem ili pitanje za SmartSales tim? 
+                Imate prijedlog, problem ili pitanje za SmartSales tim? 
 
-                    Kontaktirajte nas putem aplikacije i opcije "Pošaljite nam Vaše prijedloge" ili putem e-mail adrese: info@smartsalesbih.com
+                Kontaktirajte nas putem aplikacije i opcije "Pošaljite nam Vaše prijedloge" ili putem e-mail adrese: info@smartsalesbih.com
                                 
-                    Uz SmartSales uživajte u sniženjima i posebnim ponudama! 
+                Uz SmartSales uživajte u sniženjima i posebnim ponudama! 
                                 
-                    SmartSales tim.`,
+                SmartSales tim.`,
                 };
 
                 transport.sendMail(mailOptions, (error, info) => {
