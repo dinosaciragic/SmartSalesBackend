@@ -254,9 +254,18 @@ router.get('/all/companies', paginatedCompanies(User), (req, res) => {
 
 // Pagination middleware
 function paginatedCompanies(model) {
+  // fix and implements in frontend
   return async (req, res, next) => {
+    const page = req.query.page;
+    const limit = 12;
+    const startIndex = (page - 1) * limit;
+
     try {
-      const results = await model.find({ isCompany: true });
+      const results = await model
+        .find({ isCompany: true })
+        .limit(limit)
+        .skip(startIndex)
+        .exec();
 
       res.paginatedResults = results;
       next();
